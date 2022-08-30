@@ -119,14 +119,14 @@ function addTaskToCompleted(todoId) {
 
 //hapus data
 function findTodoIndex(todoId) {
-    for (const index in todos) {
-      if (todos[index].id === todoId) {
-        return index;
-      }
+  for (const index in todos) {
+    if (todos[index].id === todoId) {
+      return index;
     }
-  
-    return -1;
   }
+
+  return -1;
+}
 
 document.addEventListener("DOMContentLoaded", function () {
   const submitForm = document.getElementById("form");
@@ -164,4 +164,28 @@ document.addEventListener(RENDER_EVENT, function () {
       completedTODOList.append(todoElement);
     }
   }
+});
+
+const SAVED_EVENT = "saved-todo";
+const STORAGE_KEY = "TODO_APPS";
+
+function isStorageExist() /* boolean */ {
+  if (typeof Storage === undefined) {
+    alert("Browser kamu tidak mendukung local storage");
+    return false;
+  }
+  return true;
+}
+
+("menambahkan fungsi saveData() agar bisa pakai localStorage");
+function saveData() {
+  if (isStorageExist()) {
+    const parsed = JSON.stringify(todos);
+    localStorage.setItem(STORAGE_KEY, parsed);
+    document.dispatchEvent(new Event(SAVED_EVENT));
+  }
+}
+
+document.addEventListener(SAVED_EVENT, function () {
+  console.log(localStorage.getItem(STORAGE_KEY));
 });
